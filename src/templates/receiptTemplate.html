@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkTayo Parking Receipt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .receipt-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .receipt-header {
+            background: #f8fafc;
+            padding: 20px 30px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .receipt-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .receipt-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .receipt-number {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .receipt-date {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #6366f1;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .pricing-breakdown {
+            background: #f8fafc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .pricing-header {
+            background: #6366f1;
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pricing-content {
+            padding: 20px;
+        }
+
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .pricing-row:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .pricing-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .pricing-total {
+            background: #1e293b;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .dynamic-factors {
+            background: #fef3c7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .factors-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .factor-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+            color: #78350f;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .footer {
+            background: #f8fafc;
+            padding: 20px 30px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code img {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .receipt-info {
+                flex-direction: column;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">🅿️ ParkTayo</div>
+            <div class="tagline">Smart Parking Solutions</div>
+        </div>
+
+        <!-- Receipt Header -->
+        <div class="receipt-header">
+            <div class="receipt-title">Parking Receipt</div>
+            <div class="receipt-info">
+                <div class="receipt-number">Receipt #{{receiptNumber}}</div>
+                <div class="receipt-date">{{receiptDate}}</div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Booking Information -->
+            <div class="section">
+                <div class="section-title">📋 Booking Details</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Booking ID</div>
+                        <div class="info-value">{{bookingId}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value">
+                            <span class="status-badge status-{{statusClass}}">{{status}}</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Customer</div>
+                        <div class="info-value">{{customerName}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value">{{customerEmail}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Parking Information -->
+            <div class="section">
+                <div class="section-title">🚗 Parking Information</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Parking Space</div>
+                        <div class="info-value">{{parkingSpaceName}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Address</div>
+                        <div class="info-value">{{parkingSpaceAddress}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Vehicle</div>
+                        <div class="info-value">{{vehicleInfo}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Vehicle Type</div>
+                        <div class="info-value">{{vehicleType}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Information -->
+            <div class="section">
+                <div class="section-title">⏰ Time Details</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Start Time</div>
+                        <div class="info-value">{{startTime}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">End Time</div>
+                        <div class="info-value">{{endTime}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Duration</div>
+                        <div class="info-value">{{duration}} hours</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">{{actualTimeLabel}}</div>
+                        <div class="info-value">{{actualDuration}} hours</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Breakdown -->
+            <div class="section">
+                <div class="section-title">💰 Pricing Breakdown</div>
+                <div class="pricing-breakdown">
+                    <div class="pricing-header">Customer Payment Details</div>
+                    <div class="pricing-content">
+                        <div class="pricing-row">
+                            <div class="pricing-label">Base Parking Fee ({{duration}} hours × ₱{{baseRate}}/hour)</div>
+                            <div class="pricing-value">₱{{baseAmount}}</div>
+                        </div>
+                        {{#if dynamicAdjustments}}
+                        <div class="pricing-row">
+                            <div class="pricing-label">Dynamic Pricing Adjustments</div>
+                            <div class="pricing-value {{dynamicAdjustmentClass}}">{{dynamicAdjustmentSign}}₱{{dynamicAdjustmentsAbs}}</div>
+                        </div>
+                        {{/if}}
+                        {{#if overtimeCharges}}
+                        <div class="pricing-row">
+                            <div class="pricing-label">Overtime Charges ({{overtimeHours}} hours × ₱{{overtimeRate}}/hour)</div>
+                            <div class="pricing-value">₱{{overtimeCharges}}</div>
+                        </div>
+                        {{/if}}
+                        <div class="pricing-row">
+                            <div class="pricing-label">Service Fee</div>
+                            <div class="pricing-value">₱{{serviceFee}}</div>
+                        </div>
+                    </div>
+                    <div class="pricing-total">
+                        <div>Total Amount Paid</div>
+                        <div>₱{{totalAmount}}</div>
+                    </div>
+                </div>
+
+                {{#if appliedFactors}}
+                <div class="dynamic-factors">
+                    <div class="factors-title">🎯 Dynamic Pricing Factors Applied</div>
+                    {{#each appliedFactors}}
+                    <div class="factor-item">
+                        <span>{{description}}</span>
+                        <span>{{multiplierDisplay}}</span>
+                    </div>
+                    {{/each}}
+                </div>
+                {{/if}}
+            </div>
+
+            <!-- Payment Information -->
+            <div class="section">
+                <div class="section-title">💳 Payment Information</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Payment Method</div>
+                        <div class="info-value">{{paymentMethod}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Payment Status</div>
+                        <div class="info-value">{{paymentStatus}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Transaction Date</div>
+                        <div class="info-value">{{transactionDate}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Transaction ID</div>
+                        <div class="info-value">{{transactionId}}</div>
+                    </div>
+                </div>
+            </div>
+
+            {{#if qrCode}}
+            <!-- QR Code -->
+            <div class="section">
+                <div class="section-title">📱 QR Code</div>
+                <div class="qr-code">
+                    <img src="{{qrCode}}" alt="Booking QR Code" />
+                    <div style="margin-top: 10px; font-size: 12px; color: #64748b;">
+                        Scan this code for quick parking access
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-text">
+                Thank you for choosing ParkTayo! 🚗✨
+            </div>
+            <div class="footer-text">
+                This is an automated receipt generated on {{generatedDate}}
+            </div>
+            <div class="contact-info">
+                For support, contact us at support@parktayo.com | +63 (0) 917 123 4567
+            </div>
+            <div class="contact-info" style="margin-top: 10px;">
+                Visit us at www.parktayo.com
+            </div>
+        </div>
+    </div>
+</body>
+</html>
